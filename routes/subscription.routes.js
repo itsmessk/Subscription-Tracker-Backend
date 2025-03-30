@@ -1,16 +1,26 @@
 import { Router } from 'express';
 import authorize from "../middleware/auth.middleware.js";
-import {createSubscription, getAllSubscriptions, getSubscriptions, getSubsById} from "../controllers/subscription.controller.js";
+import {
+    createSubscription,
+    getAllSubscriptions,
+    getSubscriptions,
+    getSubsById,
+    sendRemindersBySubscriptionId
+} from "../controllers/subscription.controller.js";
 const subscriptionRouter = Router();
 
 
 subscriptionRouter.get('/', getAllSubscriptions);
+
+subscriptionRouter.get('/workflowCron', sendRemindersBySubscriptionId);
 
 subscriptionRouter.get( '/:id', getSubsById);
 
 subscriptionRouter.post('/', authorize, createSubscription );
 
 subscriptionRouter.get('/user/:id', authorize, getSubscriptions);
+
+
 
 subscriptionRouter.put('/:id', (req, res) => {
     res.send({title: 'PUT update subscription'});
